@@ -51,10 +51,9 @@
 (defn parse-expr [expr]
   (when-let [[_ count faces _ best-of _ worst-of modifier]
              (re-matches expr-re expr)]
-    (vec
-     (map
-      #(when % (Integer/parseInt %))
-      [count faces best-of worst-of modifier]))))
+    (map
+     #(when % (Integer/parseInt %))
+     [count faces best-of worst-of modifier])))
 
 (s/fdef parse-expr
   :args (s/cat :expr string?)
