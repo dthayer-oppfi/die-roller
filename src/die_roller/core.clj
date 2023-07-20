@@ -6,8 +6,8 @@
 (s/def ::faces pos-int?)
 (s/def ::roll int?)
 (s/def ::rolls (s/coll-of ::roll))
-(s/def ::best-of (s/nilable nat-int?))
-(s/def ::worst-of (s/nilable nat-int?))
+(s/def ::best-of (s/nilable pos-int?))
+(s/def ::worst-of (s/nilable pos-int?))
 (s/def ::modifier (s/nilable int?))
 (s/def ::expr-parts (s/cat :count ::count
                            :faces ::faces

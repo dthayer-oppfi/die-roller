@@ -70,18 +70,35 @@
 ;; (large meaning more than a million dice with more than a million faces.)
 ;; still, it will drill down on test failures to find edge cases
 
-(defspec exec-roll-test 20
+(defspec eval-rolls-test 20
   (props/for-all
-   [args (s/gen ::core/expr-parts)]
-   (let [result (apply core/eval-rolls args)]
-     (s/valid? ::core/rolls result))))
+   [[count* faces best-of worst-of modifier]
+    (s/gen ::core/expr-parts)]
+   (and (let [result (core/eval-rolls count* faces best-of worst-of modifier)]
+          (s/valid? ::core/rolls result))
+        (let [result (core/eval-rolls count* 1 nil nil nil)]
+          (= count* (reduce + result)))
+        (let [result (core/eval-rolls 1 faces nil nil nil)]
+          (<= 1 (first result) faces))
+        (if modifier
+          (let [result (core/eval-rolls 1 1 nil nil modifier)]
+            (= (first result) (+ 1 modifier)))
+          true)
+        (if best-of
+          (let [result (core/eval-rolls count* 1 best-of nil nil)]
+            (= (count result) (min count* best-of)))
+          true)
+        (if worst-of
+          (let [result (core/eval-rolls count* 1 nil worst-of nil)]
+            (= (count result) (min count* worst-of)))
+          true))))
 
 ;; this test generates strings and evaluates them as expressions,
 ;; but it's rather unlikely that generated strings are valid expressions.
 ;; that's fine! we've already tested everything else.
 ;; this test validates only that unruly user input won't break the system.
 
-(defspec exec-expr-test 500
+(defspec eval-expr-test 500
   (props/for-all
    [expr (s/gen string?)]
    (s/valid? (s/nilable ::core/rolls) (core/eval-die-expr expr))))
