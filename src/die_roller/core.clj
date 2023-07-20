@@ -2,15 +2,13 @@
   (:require [clojure.spec.alpha :as s]
             [clojure.spec.gen.alpha :as g]))
 
-(defn less-than-max [x] (< (abs x) Integer/MAX_VALUE))
-
-(s/def ::count (s/and pos-int? less-than-max))
-(s/def ::faces (s/and pos-int? less-than-max))
+(s/def ::count pos-int?)
+(s/def ::faces pos-int?)
 (s/def ::roll int?)
 (s/def ::rolls (s/coll-of ::roll))
-(s/def ::best-of (s/nilable (s/and nat-int? less-than-max)))
-(s/def ::worst-of (s/nilable (s/and nat-int? less-than-max)))
-(s/def ::modifier (s/nilable (s/and int? less-than-max)))
+(s/def ::best-of (s/nilable nat-int?))
+(s/def ::worst-of (s/nilable nat-int?))
+(s/def ::modifier (s/nilable int?))
 (s/def ::expr-parts (s/cat :count ::count
                            :faces ::faces
                            :best-of ::best-of
