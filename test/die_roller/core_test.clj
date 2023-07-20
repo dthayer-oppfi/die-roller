@@ -9,7 +9,7 @@
 (instrument)
 
 ;; let's start with some example tests
-;; these test explicit presumptions
+;; which test explicit presumptions.
 
 (deftest example-example-test
   (testing "2d1 > 1d1"
@@ -44,7 +44,7 @@
 ;; and validate results.
 ;; this has the drawback of obscuring whether the result is "correct"
 ;; because the result might be so many things!
-;; but we can comfortably assert that the result fits type expectations.
+;; but we can comfortably assert that the result fits data expectations.
 
 (defspec parse-expr-test 500
   (props/for-all
@@ -73,6 +73,11 @@
                          ::core/modifier))]
    (let [result (apply core/do-rolls args)]
      (s/valid? ::core/rolls result))))
+
+;; this test generates strings and evaluates them as expressions,
+;; but it's rather unlikely that generated strings are valid expressions.
+;; that's fine! we've already tested everything else.
+;; this test validates only that unruly user input won't break the system.
 
 (defspec do-expr-test 500
   (props/for-all
