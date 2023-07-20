@@ -10,9 +10,12 @@
 (s/def ::modifier (s/nilable int?))
 
 (s/def ::die-expr string?)
-(s/def ::parsed-expr (s/nilable (s/tuple ::count ::faces ::best-of ::worst-of ::modifier)))
+(s/def ::parsed-expr
+  (s/nilable
+   (s/tuple ::count ::faces ::best-of ::worst-of ::modifier)))
 
 (def expr-re #"^(\d+?)d(\d+)(b(\d+?))?(w(\d+?))?([-+]\d+)?$")
+;; ex: 1d20, 1d20+1, 2d20b1, 5d6w3
 
 (defn parse-expr [expr]
   (when-let [[_ count faces _ best-of _ worst-of modifier]

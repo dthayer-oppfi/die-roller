@@ -21,7 +21,7 @@
            (is (>= 19 (first result) 0))))))
 
 ;; but this only tests the cases we bothered to implement!
-;; what about when numbers are larger, more... random?
+;; what about when inputs are larger, more... random?
 
 (defspec examples-but-specd 20
   (props/for-all
@@ -38,6 +38,7 @@
 
 ;; the generator above only uses specs sometimes
 ;; because the test doesn't expect nil values
+;; (which our specs do)
 
 ;; the following tests use specs both to generate input
 ;; and validate results.
