@@ -1,6 +1,6 @@
 # die-roller
 
-A die roller written in Clojure. It provides a `do-expr` function that parses a string "die expression" into the results of rolling one or more virtual dice. These die expressions include:
+A die roller written in Clojure. It provides a `eval-die-expr` function that parses a string "die expression" into the results of rolling one or more virtual dice. These die expressions include:
 
 - 1d20: roll one twenty-sided die.
 - 1d6+1: roll one six-sided die and add one.
