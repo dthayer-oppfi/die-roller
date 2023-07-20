@@ -16,7 +16,7 @@ Good luck getting it as a dependency!
 
 ```clojure
 (ns your-ns
-  (:require [die-roller.core :refer [do-expr]]))
+  (:require [die-roller.core :refer [do-expr do-roll]]))
 
 (println (do-expr "1d20"))
 ;; => (19) ; a list of results, specifically rolling one d20.
