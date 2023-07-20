@@ -16,18 +16,19 @@ Good luck getting it as a dependency!
 
 ```clojure
 (ns your-ns
-  (:require [die-roller.core :refer [do-expr do-roll]]))
+  (:require [die-roller.core :refer [eval-die-expr
+                                     eval-rolls]]))
 
 (println (do-expr "1d20"))
 ;; => (19) ; a list of results, specifically rolling one d20.
 
-;; tip: use `do-rolls` to feed inputs directly to the die roller.
+;; tip: use `eval-rolls` to feed inputs directly to the die roller.
 (let [count 1
       faces 20
       best-of nil
       worst-of nil
       modifier nil]
-  (println (do-rolls count faces best-of worst-of modifier)))
+  (println (eval-rolls count faces best-of worst-of modifier)))
 ;; => (2) ; you fail to persuade the king that his shoes are untied.
 ```
 
