@@ -1,6 +1,7 @@
 (ns die-roller.core-test
   (:require [clojure.spec.alpha :as s]
             [orchestra.spec.test :refer [instrument]]
+            [clojure.spec.test.alpha :as stest]
             [clojure.test :refer [deftest is testing]]
             [clojure.test.check.clojure-test :refer [defspec]]
             [clojure.test.check.properties :as props]
@@ -40,29 +41,20 @@
 ;; because the test doesn't expect potentially-nil values
 ;; (which our specs do)
 
-;; the following tests use specs both to generate input
-;; and validate results.
+;; the following tests use `clojure.spec.alpha.test/check`
+;; which uses function specs for provided symbols
+;; to provide valid input and expect valid output.
 ;; this has the drawback of obscuring whether the result is "correct"
 ;; because the result might be so many things!
 ;; but we can comfortably assert that the result fits data expectations.
 
-(defspec make-expr-test 500
-  (props/for-all
-   [args (s/gen ::core/expr-parts)]
-   (let [result (apply core/make-expr args)]
-     (s/valid? ::core/die-expr result))))
-
-(defspec parse-expr-test 500
-  (props/for-all
-   [expr (s/gen ::core/die-expr)]
-   (let [result (core/parse-expr expr)]
-     (s/valid? ::core/expr-parts result))))
-
-(defspec roll-die-test 500
-  (props/for-all
-   [n (s/gen ::core/faces)]
-   (let [result (core/roll-die n)]
-     (s/valid? ::core/roll result))))
+(deftest spec-tests
+  (doseq [sym [`core/make-expr
+               `core/parse-expr
+               `core/roll-die]]
+    (let [{:keys [failure]}
+          (-> sym stest/check first stest/abbrev-result)]
+      (is (nil? failure) [sym failure]))))
 
 ;; the following test only uses 20 cases
 ;; because as cases increase, inputs get more complicated
